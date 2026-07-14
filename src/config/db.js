@@ -22,7 +22,7 @@ const c01Config = {
 const poolPromise = new sql.ConnectionPool(c01Config)
     .connect()
     .then(pool => {
-        console.log('Conectado a SQL Server (Nodo C01)');
+        console.log('Conectado a SQL Server');
         return pool;
     })
     .catch(err => {

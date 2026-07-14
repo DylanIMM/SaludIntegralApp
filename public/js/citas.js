@@ -170,7 +170,7 @@ async function cargarTabla() {
 
                 <button
                     class="btn-action btn-edit"
-                    onclick="editar('${c.id_cita}')">
+                    onclick='editar(${JSON.stringify(c)})'>
 
                     Editar
 
@@ -192,21 +192,6 @@ async function cargarTabla() {
   });
 }
 
-//=====================================
-
-async function obtenerCita(id) {
-  const response = await fetch(
-    `${API}/${id}`,
-
-    {
-      headers: {
-        "x-sede": sede,
-      },
-    },
-  );
-
-  return await response.json();
-}
 //=====================================
 // GUARDAR
 //=====================================
@@ -269,34 +254,29 @@ async function guardarCita(e) {
 // EDITAR
 //=====================================
 
-window.editar = async function (id) {
-  try {
-    const cita = await obtenerCita(id);
+window.editar = function(c) {
 
     editMode = true;
 
-    editId = id;
+    editId = c.id_cita;
 
-    document.getElementById("fecha").value = cita.fecha;
+    document.getElementById("fecha").value = c.fecha;
 
-    document.getElementById("hora").value = cita.hora;
+    document.getElementById("hora").value = c.hora;
 
-    document.getElementById("motivo_consulta").value = cita.motivo_consulta;
+    document.getElementById("motivo_consulta").value = c.motivo_consulta;
 
-    document.getElementById("diagnostico").value = cita.diagnostico ?? "";
+    document.getElementById("diagnostico").value = c.diagnostico ?? "";
 
-    document.getElementById("estado").value = cita.estado;
+    document.getElementById("estado").value = c.estado;
 
-    document.getElementById("id_medico").value = cita.id_medico;
+    document.getElementById("id_medico").value = c.id_medico;
 
-    document.getElementById("id_paciente").value = cita.id_paciente;
+    document.getElementById("id_paciente").value = c.id_paciente;
 
-    document.getElementById("nro_consultorio").value = cita.nro_consultorio;
+    document.getElementById("nro_consultorio").value = c.nro_consultorio;
 
     btnSubmit.textContent = "Actualizar";
-  } catch (err) {
-    alert(err.message);
-  }
 };
 
 //=====================================

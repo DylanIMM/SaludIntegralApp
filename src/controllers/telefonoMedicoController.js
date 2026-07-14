@@ -75,16 +75,6 @@ export const createTelefonoMedico = async (req, res) => {
 
         );
 
-        if (!creado) {
-
-            return res.status(500).json({
-
-                error: "No fue posible registrar el teléfono."
-
-            });
-
-        }
-
         res.status(201).json({
 
             message: "Teléfono registrado correctamente."
@@ -107,9 +97,6 @@ export const createTelefonoMedico = async (req, res) => {
 
 };
 
-//=====================================================
-// ACTUALIZAR TELÉFONO
-//=====================================================
 //=====================================================
 // ACTUALIZAR TELÉFONO
 //=====================================================
@@ -146,15 +133,6 @@ export const updateTelefonoMedico = async (req, res) => {
 
         );
 
-        if (!actualizado) {
-
-            return res.status(404).json({
-
-                error: "Teléfono no encontrado."
-
-            });
-
-        }
 
         res.status(200).json({
 
@@ -181,9 +159,6 @@ export const updateTelefonoMedico = async (req, res) => {
 //=====================================================
 // ELIMINAR TELÉFONO
 //=====================================================
-//=====================================================
-// ELIMINAR TELÉFONO
-//=====================================================
 
 export const deleteTelefonoMedico = async (req, res) => {
 
@@ -203,15 +178,6 @@ export const deleteTelefonoMedico = async (req, res) => {
 
         );
 
-        if (!eliminado) {
-
-            return res.status(404).json({
-
-                error: "Teléfono no encontrado."
-
-            });
-
-        }
 
         res.status(200).json({
 

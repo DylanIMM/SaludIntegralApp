@@ -182,12 +182,6 @@ async function guardarClinica(e) {
 
     const clinica = {
 
-        id_clinica: document
-            .getElementById("id_clinica")
-            .value
-            .trim()
-            .toUpperCase(),
-
         nombre: document
             .getElementById("nombre")
             .value
@@ -282,12 +276,9 @@ window.editarClinica = function (clinica) {
 
     editId = clinica.id_clinica;
 
-    document.getElementById("id_clinica").value = clinica.id_clinica;
     document.getElementById("nombre").value = clinica.nombre;
     document.getElementById("direccion").value = clinica.direccion;
     document.getElementById("telefono").value = clinica.telefono;
-
-    document.getElementById("id_clinica").disabled = true;
 
     btnSubmit.textContent = "Actualizar";
 
@@ -352,10 +343,6 @@ function limpiarFormulario() {
     form.reset();
 
     editMode = false;
-
-    editId = null;
-
-    document.getElementById("id_clinica").disabled = false;
 
     btnSubmit.textContent = "Guardar";
 

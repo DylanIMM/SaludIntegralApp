@@ -31,52 +31,6 @@ export const getCitas = async (req, res) => {
 };
 
 //=====================================================
-// OBTENER CITA POR ID
-//=====================================================
-
-export const getCitaById = async (req, res) => {
-
-    const sede = req.headers["x-sede"] || "C01";
-
-    try {
-
-        const cita = await CitaModel.getById(
-
-            req.params.id,
-
-            sede
-
-        );
-
-        if (!cita) {
-
-            return res.status(404).json({
-
-                error: "Cita no encontrada."
-
-            });
-
-        }
-
-        res.status(200).json(cita);
-
-    }
-
-    catch (error) {
-
-        console.error("Error obteniendo cita:", error);
-
-        res.status(500).json({
-
-            error: error.message
-
-        });
-
-    }
-
-};
-
-//=====================================================
 // CREAR CITA
 //=====================================================
 
@@ -137,16 +91,6 @@ export const createCita = async (req, res) => {
 
         );
 
-        if (!creada) {
-
-            return res.status(500).json({
-
-                error: "No fue posible registrar la cita."
-
-            });
-
-        }
-
         res.status(201).json({
 
             message: "Cita registrada correctamente."
@@ -189,16 +133,6 @@ export const updateCita = async (req, res) => {
 
         );
 
-        if (!actualizado) {
-
-            return res.status(404).json({
-
-                error: "Cita no encontrada."
-
-            });
-
-        }
-
         res.status(200).json({
 
             message: "Cita actualizada correctamente."
@@ -239,15 +173,6 @@ export const deleteCita = async (req, res) => {
 
         );
 
-        if (!eliminado) {
-
-            return res.status(404).json({
-
-                error: "Cita no encontrada."
-
-            });
-
-        }
 
         res.status(200).json({
 
@@ -260,36 +185,6 @@ export const deleteCita = async (req, res) => {
     catch (error) {
 
         console.error("Error eliminando cita:", error);
-
-        res.status(500).json({
-
-            error: error.message
-
-        });
-
-    }
-
-};
-
-//=====================================================
-// PRÓXIMAS CITAS
-//=====================================================
-
-export const getUpcomingCitas = async (req, res) => {
-
-    const sede = req.headers["x-sede"] || "C01";
-
-    try {
-
-        const citas = await CitaModel.getUpcomingCitas(sede);
-
-        res.status(200).json(citas);
-
-    }
-
-    catch (error) {
-
-        console.error("Error obteniendo próximas citas:", error);
 
         res.status(500).json({
 

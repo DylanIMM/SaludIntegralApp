@@ -37,24 +37,15 @@ export const createClinica = async (req, res) => {
         });
     }
 
-    // Solo publica C01
-    if (sede !== 'C01') {
-        return res.status(403).json({
-            error: 'Solo la sede C01 puede registrar clínicas.'
-        });
-    }
-
     try {
 
         const {
-            id_clinica,
             nombre,
             direccion,
             telefono
         } = req.body;
 
         if (
-            !id_clinica ||
             !nombre ||
             !direccion ||
             !telefono
@@ -65,12 +56,6 @@ export const createClinica = async (req, res) => {
         }
 
         const creada = await ClinicaModel.create(req.body);
-
-        if (!creada) {
-            return res.status(500).json({
-                error: 'No se pudo registrar la clínica.'
-            });
-        }
 
         res.status(201).json({
             message: 'Clínica registrada correctamente.'
@@ -96,24 +81,12 @@ export const updateClinica = async (req, res) => {
         });
     }
 
-    if (sede !== 'C01') {
-        return res.status(403).json({
-            error: 'Solo la sede C01 puede modificar clínicas.'
-        });
-    }
-
     try {
 
         const actualizada = await ClinicaModel.update(
             req.params.id,
             req.body
         );
-
-        if (!actualizada) {
-            return res.status(404).json({
-                error: 'Clínica no encontrada.'
-            });
-        }
 
         res.json({
             message: 'Clínica actualizada correctamente.'
@@ -139,23 +112,12 @@ export const deleteClinica = async (req, res) => {
         });
     }
 
-    if (sede !== 'C01') {
-        return res.status(403).json({
-            error: 'Solo la sede C01 puede eliminar clínicas.'
-        });
-    }
 
     try {
 
         const eliminada = await ClinicaModel.delete(
             req.params.id
         );
-
-        if (!eliminada) {
-            return res.status(404).json({
-                error: 'Clínica no encontrada.'
-            });
-        }
 
         res.json({
             message: 'Clínica eliminada correctamente.'

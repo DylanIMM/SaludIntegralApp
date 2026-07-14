@@ -90,11 +90,6 @@ export const updatePaciente = async (req, res) => {
             sede
         );
 
-        if (!actualizado) {
-            return res.status(404).json({
-                error: 'Paciente no encontrado.'
-            });
-        }
 
         res.json({
             message: 'Paciente actualizado correctamente.'
@@ -127,11 +122,6 @@ export const deletePaciente = async (req, res) => {
             sede
         );
 
-        if (!eliminado) {
-            return res.status(404).json({
-                error: 'Paciente no encontrado.'
-            });
-        }
 
         res.json({
             message: 'Paciente eliminado correctamente.'

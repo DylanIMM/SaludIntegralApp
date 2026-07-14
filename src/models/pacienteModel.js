@@ -1,141 +1,89 @@
-import { poolPromise, sql } from '../config/db.js';
-import { getPacienteTable } from '../config/distributedConfig.js';
-
-const generatePacienteId = async (pool, tablaPaciente) => {
-    const result = await pool.request().query(`
-        SELECT TOP 1 id_paciente
-        FROM ${tablaPaciente}
-        ORDER BY id_paciente DESC
-    `);
-
-    if (result.recordset.length === 0) {
-        return 'PAC001';
-    }
-
-    const ultimoId = result.recordset[0].id_paciente;
-    const numero = parseInt(ultimoId.replace('PAC', '')) + 1;
-
-    return `PAC${numero.toString().padStart(3, '0')}`;
-};
+import { poolPromise, sql } from "../config/db.js";
 
 export const PacienteModel = {
+
+    //====================================
+    // LISTAR
+    //====================================
 
     getAllBySede: async (sede) => {
 
         const pool = await poolPromise;
 
-        const tablaPaciente = getPacienteTable(sede);
+        const result = await pool.request()
 
-        const result = await pool.request().query(`
-            SELECT
-                id_paciente,
-                cedula,
-                nombre,
-                edad,
-                direccion,
-                telefono
-            FROM ${tablaPaciente}
-            ORDER BY id_paciente
-        `);
+            .execute("SP_GET_PACIENTES");
 
         return result.recordset;
+
     },
+
+    //====================================
+    // CREAR
+    //====================================
 
     create: async (data, sede) => {
 
         const pool = await poolPromise;
 
-        const tablaPaciente = getPacienteTable(sede);
+        const result = await pool.request()
 
-        const nuevoId = await generatePacienteId(pool, tablaPaciente);
+    .input("cedula", sql.VarChar, data.cedula)
+    .input("nombre", sql.VarChar, data.nombre)
+    .input("edad", sql.Int, data.edad)
+    .input("direccion", sql.VarChar, data.direccion)
+    .input("telefono", sql.VarChar, data.telefono)
 
-        await pool.request()
+    .execute("SP_INSERT_PACIENTE");
 
-            .input('id_paciente', sql.VarChar, nuevoId)
-            .input('cedula', sql.VarChar, data.cedula)
-            .input('nombre', sql.VarChar, data.nombre)
-            .input('edad', sql.Int, data.edad)
-            .input('direccion', sql.VarChar, data.direccion)
-            .input('telefono', sql.VarChar, data.telefono)
+return {
 
-            .query(`
-                INSERT INTO ${tablaPaciente}
+    id_paciente: result.recordset[0].id_paciente,
 
-                (
-                    id_paciente,
-                    cedula,
-                    nombre,
-                    edad,
-                    direccion,
-                    telefono
-                )
+    ...data
 
-                VALUES
-
-                (
-                    @id_paciente,
-                    @cedula,
-                    @nombre,
-                    @edad,
-                    @direccion,
-                    @telefono
-                )
-            `);
-
-        return {
-            id_paciente: nuevoId,
-            ...data
-        };
+};
     },
+
+    //====================================
+    // ACTUALIZAR
+    //====================================
 
     update: async (id, data, sede) => {
 
         const pool = await poolPromise;
 
-        const tablaPaciente = getPacienteTable(sede);
+        const result = await pool.request()
 
-        await pool.request()
+            .input("id_paciente", sql.VarChar, id)
+            .input("cedula", sql.VarChar, data.cedula)
+            .input("nombre", sql.VarChar, data.nombre)
+            .input("edad", sql.Int, data.edad)
+            .input("direccion", sql.VarChar, data.direccion)
+            .input("telefono", sql.VarChar, data.telefono)
 
-            .input('id', sql.VarChar, id)
-            .input('cedula', sql.VarChar, data.cedula)
-            .input('nombre', sql.VarChar, data.nombre)
-            .input('edad', sql.Int, data.edad)
-            .input('direccion', sql.VarChar, data.direccion)
-            .input('telefono', sql.VarChar, data.telefono)
+            .execute("SP_UPDATE_PACIENTE");
 
-            .query(`
-                UPDATE ${tablaPaciente}
+        return result.rowsAffected[0] > 0;
 
-                SET
-
-                    cedula=@cedula,
-                    nombre=@nombre,
-                    edad=@edad,
-                    direccion=@direccion,
-                    telefono=@telefono
-
-                WHERE id_paciente=@id
-            `);
-
-        return true;
     },
+
+    //====================================
+    // ELIMINAR
+    //====================================
 
     delete: async (id, sede) => {
 
         const pool = await poolPromise;
 
-        const tablaPaciente = getPacienteTable(sede);
+        const result = await pool.request()
 
-        await pool.request()
+            .input("id_paciente", sql.VarChar, id)
 
-            .input('id', sql.VarChar, id)
+            .execute("SP_DELETE_PACIENTE");
 
-            .query(`
-                DELETE FROM ${tablaPaciente}
-                WHERE id_paciente=@id
-            `);
+        return result.rowsAffected[0] > 0;
 
-        return true;
     }
 
 };

@@ -134,12 +134,6 @@ async function guardarConsultorio(e){
 
     const consultorio = {
 
-        nro_consultorio: Number(
-
-            document.getElementById("nro_consultorio").value
-
-        ),
-
         tipo_atencion:
 
             document.getElementById("tipo_atencion").value.trim(),
@@ -237,19 +231,13 @@ async function guardarConsultorio(e){
 window.editarConsultorio = function(item){
 
     editMode = true;
-
     consultorioActual = item.nro_consultorio;
-
-    document.getElementById("nro_consultorio").value =
-        item.nro_consultorio;
 
     document.getElementById("tipo_atencion").value =
         item.tipo_atencion;
 
     document.getElementById("piso").value =
         item.piso;
-
-    document.getElementById("nro_consultorio").disabled = true;
 
     btnSubmit.textContent = "Actualizar";
 
@@ -316,10 +304,6 @@ function limpiarFormulario(){
     form.reset();
 
     editMode = false;
-
-    consultorioActual = null;
-
-    document.getElementById("nro_consultorio").disabled = false;
 
     btnSubmit.textContent = "Guardar";
 

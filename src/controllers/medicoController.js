@@ -158,16 +158,6 @@ export const updateMedico = async (req, res) => {
 
         );
 
-        if (!actualizado) {
-
-            return res.status(404).json({
-
-                error: "Médico no encontrado."
-
-            });
-
-        }
-
         res.status(200).json({
 
             message: "Médico actualizado correctamente."
@@ -207,16 +197,6 @@ export const deleteMedico = async (req, res) => {
             sede
 
         );
-
-        if (!eliminado) {
-
-            return res.status(404).json({
-
-                error: "Médico no encontrado."
-
-            });
-
-        }
 
         res.status(200).json({
 

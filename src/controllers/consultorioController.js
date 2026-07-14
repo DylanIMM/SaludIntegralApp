@@ -42,7 +42,6 @@ export const createConsultorio = async (req, res) => {
 
         const {
 
-            nro_consultorio,
             tipo_atencion,
             piso
 
@@ -50,7 +49,6 @@ export const createConsultorio = async (req, res) => {
 
         if (
 
-            nro_consultorio == null ||
             !tipo_atencion ||
             piso == null
 
@@ -68,7 +66,6 @@ export const createConsultorio = async (req, res) => {
 
             {
 
-                nro_consultorio,
                 tipo_atencion,
                 piso
 
@@ -78,15 +75,6 @@ export const createConsultorio = async (req, res) => {
 
         );
 
-        if (!creado) {
-
-            return res.status(500).json({
-
-                error: "No fue posible registrar el consultorio."
-
-            });
-
-        }
 
         res.status(201).json({
 
@@ -157,15 +145,6 @@ export const updateConsultorio = async (req, res) => {
 
         );
 
-        if (!actualizado) {
-
-            return res.status(404).json({
-
-                error: "Consultorio no encontrado."
-
-            });
-
-        }
 
         res.status(200).json({
 
@@ -207,15 +186,6 @@ export const deleteConsultorio = async (req, res) => {
 
         );
 
-        if (!eliminado) {
-
-            return res.status(404).json({
-
-                error: "Consultorio no encontrado."
-
-            });
-
-        }
 
         res.status(200).json({
 
