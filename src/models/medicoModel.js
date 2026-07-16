@@ -1,4 +1,4 @@
-import { poolPromise, sql } from "../config/db.js";
+import { getPool, sql } from "../config/db.js";
 import { isSedeValid } from "../config/distributedConfig.js";
 
 export const MedicoModel = {
@@ -13,7 +13,7 @@ export const MedicoModel = {
             throw new Error("Sede inválida");
         }
 
-        const pool = await poolPromise;
+        const pool = await getPool(sede);
 
         const result = await pool.request()
 
@@ -34,7 +34,7 @@ create: async (data, sede) => {
         throw new Error("Sede inválida");
     }
 
-    const pool = await poolPromise;
+    const pool = await getPool(sede);
 
     const result = await pool.request()
 
@@ -66,7 +66,7 @@ create: async (data, sede) => {
             throw new Error("Sede inválida");
         }
 
-        const pool = await poolPromise;
+        const pool = await getPool(sede);
 
         const result = await pool.request()
 
@@ -93,7 +93,7 @@ create: async (data, sede) => {
             throw new Error("Sede inválida");
         }
 
-        const pool = await poolPromise;
+        const pool = await getPool(sede);
 
         const result = await pool.request()
 

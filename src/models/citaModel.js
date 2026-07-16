@@ -1,4 +1,4 @@
-import { poolPromise, sql } from "../config/db.js";
+import { getPool, sql } from "../config/db.js";
 import { isSedeValid } from "../config/distributedConfig.js";
 
 export const CitaModel = {
@@ -13,7 +13,7 @@ export const CitaModel = {
             throw new Error("Sede inválida");
         }
 
-        const pool = await poolPromise;
+        const pool = await getPool(sede);
 
         const result = await pool.request()
 
@@ -35,7 +35,7 @@ export const CitaModel = {
             throw new Error("Sede inválida");
         }
 
-        const pool = await poolPromise;
+        const pool = await getPool(sede);
 
         const result = await pool.request()
 
@@ -68,7 +68,7 @@ export const CitaModel = {
             throw new Error("Sede inválida");
         }
 
-        const pool = await poolPromise;
+        const pool = await getPool(sede);
 
         const result = await pool.request()
 
@@ -103,7 +103,7 @@ export const CitaModel = {
             throw new Error("Sede inválida");
         }
 
-        const pool = await poolPromise;
+        const pool = await getPool(sede);
 
         const result = await pool.request()
 

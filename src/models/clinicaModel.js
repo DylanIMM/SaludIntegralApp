@@ -1,4 +1,4 @@
-import { poolPromise, sql } from '../config/db.js';
+import { getPool, sql } from "../config/db.js";
 
 export const ClinicaModel = {
 
@@ -6,9 +6,9 @@ export const ClinicaModel = {
     // LISTAR
     //====================================
 
-    getAll: async () => {
+    getAll: async (sede) => {
 
-        const pool = await poolPromise;
+        const pool = await getPool(sede);
 
         const result = await pool.request()
 
@@ -24,7 +24,7 @@ export const ClinicaModel = {
 
     create: async (data) => {
 
-        const pool = await poolPromise;
+        const pool = await getPool("C01");
 
         const result = await pool.request()
 
@@ -44,7 +44,7 @@ export const ClinicaModel = {
 
     update: async (id, data) => {
 
-        const pool = await poolPromise;
+        const pool = await getPool("C01");
 
         const result = await pool.request()
 
@@ -65,7 +65,7 @@ export const ClinicaModel = {
 
     delete: async (id) => {
 
-        const pool = await poolPromise;
+        const pool = await getPool("C01");
 
         const result = await pool.request()
 
