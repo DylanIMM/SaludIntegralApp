@@ -7,23 +7,17 @@ export const MedicoModel = {
     // LISTAR
     //====================================
 
-    getAllBySede: async (sede) => {
+    getAllBySede: async (sede)=>{
 
-        if (!isSedeValid(sede)) {
-            throw new Error("Sede inválida");
-        }
+    const pool = await getPool(sede);
 
-        const pool = await getPool(sede);
+    const result = await pool.request()
 
-        const result = await pool.request()
+        .execute("SP_GET_MEDICOS");
 
-            .input("id_clinica", sql.VarChar, sede)
+    return result.recordset;
 
-            .execute("SP_GET_MEDICOS");
-
-        return result.recordset;
-
-    },
+},
 
     //====================================
     // CREAR

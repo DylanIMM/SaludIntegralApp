@@ -10,6 +10,7 @@ const sede =
 
 const form = document.getElementById("crud-form");
 const tbody = document.getElementById("table-tbody");
+const thead = document.getElementById("table-head");
 const btnSubmit = form.querySelector('button[type="submit"]');
 
 let editMode = false;
@@ -33,9 +34,7 @@ async function cargarMedicos() {
         const response = await fetch(API, {
 
             headers: {
-
                 "x-sede": sede
-
             }
 
         });
@@ -47,93 +46,127 @@ async function cargarMedicos() {
         if (medicos.length === 0) {
 
             tbody.innerHTML = `
-
-            <tr>
-
-                <td colspan="6" style="text-align:center">
-
-                    No existen médicos registrados.
-
-                </td>
-
-            </tr>
-
+                <tr>
+                    <td colspan="${sede === "C01" ? 6 : 4}" style="text-align:center">
+                        No existen médicos registrados.
+                    </td>
+                </tr>
             `;
 
             return;
+        }
 
+        if(sede === "C01"){
+            thead.innerHTML = `
+                    <tr>
+                        <th>ID</th>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Especialidad</th>
+                        <th>Horario de Atención</th>
+                        <th>Acciones</th>
+                    </tr>
+                `;
+        }else{
+            thead.innerHTML = `
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Especialidad</th>
+
+                        <th>Horario de atención</th>
+
+                        <th>Acciones</th>
+
+                    </tr>
+                `;
         }
 
         medicos.forEach(medico => {
 
-            tbody.innerHTML += `
+            if (sede === "C01") {
 
-            <tr>
+                tbody.innerHTML += `
+                    <tr>
 
-                <td>${medico.id_medico}</td>
+                        <td>${medico.id_medico}</td>
 
-                <td>${medico.cedula}</td>
+                        <td>${medico.cedula}</td>
 
-                <td>${medico.nombre}</td>
+                        <td>${medico.nombre}</td>
 
-                <td>${medico.especialidad}</td>
+                        <td>${medico.especialidad ?? ""}</td>
 
-                <td>${medico.horario_atencion}</td>
+                        <td>${medico.horario_atencion ?? ""}</td>
 
-                <td>
+                        <td>
 
-                    <button
+                            <button
+                                class="btn-action btn-edit"
+                                onclick='editarMedico(${JSON.stringify(medico)})'>
+                                Editar
+                            </button>
 
-                        class="btn-action btn-edit"
+                            <button
+                                class="btn-action btn-danger"
+                                onclick="eliminarMedico('${medico.id_medico}')">
+                                Eliminar
+                            </button>
 
-                        onclick='editarMedico(${JSON.stringify(medico)})'>
+                        </td>
 
-                        Editar
+                    </tr>
+                `;
 
-                    </button>
+            } else {
+                tbody.innerHTML += `
+                    <tr>
 
-                    <button
+                        <td>${medico.id_medico}</td>
 
-                        class="btn-action btn-danger"
+                        <td>${medico.especialidad}</td>
 
-                        onclick="eliminarMedico('${medico.id_medico}')">
+                        <td>${medico.horario_atencion}</td>
 
-                        Eliminar
+                        <td>
 
-                    </button>
+                            <button
+                                class="btn-action btn-edit"
+                                onclick='editarMedico(${JSON.stringify(medico)})'>
+                                Editar
+                            </button>
 
-                </td>
+                            <button
+                                class="btn-action btn-danger"
+                                onclick="eliminarMedico('${medico.id_medico}')">
+                                Eliminar
+                            </button>
 
-            </tr>
+                        </td>
 
-            `;
+                    </tr>
+                `;
+
+            }
 
         });
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
 
         tbody.innerHTML = `
-
-        <tr>
-
-            <td colspan="6">
-
-                Error al conectar con el servidor.
-
-            </td>
-
-        </tr>
-
+            <tr>
+                <td colspan="${sede === "C01" ? 6 : 4}">
+                    Error al conectar con el servidor.
+                </td>
+            </tr>
         `;
 
     }
 
 }
-
 //======================================
 
 async function guardarMedico(e) {
